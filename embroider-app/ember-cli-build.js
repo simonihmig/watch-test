@@ -6,9 +6,13 @@ const Compat = require('@embroider/compat');
 const sideWatch = require('@embroider/broccoli-side-watch');
 
 module.exports = function (defaults) {
-  let app = new EmberApp(defaults);
-
-  return sideWatch(Compat.compatBuild(app, Webpack), {
-    watching: ['watch-test'],
+  let app = new EmberApp(defaults, {
+    trees: {
+      app: sideWatch('app', {
+        watching: ['watch-test'],
+      }),
+    },
   });
+
+  return Compat.compatBuild(app, Webpack);
 };
